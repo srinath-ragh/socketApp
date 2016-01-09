@@ -8,7 +8,8 @@ mongo = require('mongodb'),
 eventHandler = require('./eventHandler.js'),
 cluster = require('cluster'),
 redis = require('redis'),
-client = redis.createClient();
+redisConfig = require('../config/redis.js'),
+client = redis.createClient(redisConfig[process.env.NODE_ENV]);
 
 module.exports = function(app) {
 	// API
