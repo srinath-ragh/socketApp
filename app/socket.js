@@ -2,20 +2,17 @@ var Primus = require('primus'),
 PrimusCluster = require('primus-cluster'),
 cookie = require('cookie'),
 cluster = require('cluster'),
+redis = require("redis"),
+redisConfig = require('../config/redis.js'),
+socketRedisClient = redis.createClient(redisConfig[process.env.NODE_ENV]),
+usrActvyRedisClient = redis.createClient(redisConfig[process.env.NODE_ENV]),
 options = {
-	port: 3000, 
+	port: process.env.PORT || 3000, 
 	transformer: 'engine.io',
 	cluster: {
-	    redis: {
-	      port: 6379,
-	      host: '127.0.0.1',
-	      connect_timeout: 200
-	    }
-	  }
+		redis: redisConfig[process.env.NODE_ENV]
+	}
 },
-redis = require("redis"),
-socketRedisClient = redis.createClient(),
-usrActvyRedisClient = redis.createClient(),
 RedisAdministrator = require('./modules/redis/RedisAdministrator.js'),
 redisAdmin = new RedisAdministrator(),
 eventHandler = require('./eventHandler.js');

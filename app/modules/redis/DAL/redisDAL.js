@@ -1,5 +1,6 @@
 var redis = require("redis"),
-    redisClient = redis.createClient();
+	redisConfig = require('../../../../config/redis.js'),
+    redisClient = redis.createClient(redisConfig[process.env.NODE_ENV]);
 
 var redisDAL = {
 	clipSocketToUser: function(socketDto, callback){
