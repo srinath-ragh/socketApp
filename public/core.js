@@ -159,7 +159,7 @@ coreApp.controller('homeController', function($scope, $location, $cookieStore, $
 			authorization: 'sweetpass'
 			//{ scheme: 'Basic', username: 'admin', password: 'password' }
 		};
-		primus = Primus.connect('http://'+$location.host()+':8080');
+		primus = Primus.connect('http://'+$location.host());
     primus.on('data', function (data) {
    	//Testing sample engine.io
       if(data === 'usersActivityChange'){
