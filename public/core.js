@@ -149,27 +149,29 @@ coreApp.controller('homeController', function($scope, $location, $cookieStore, $
 	$scope.hashedUser = $cookieStore.get('hash');
 	var tempConvData=[],
 	dataLoaded = false;
-		//If no user login exists in the cookie store, redirect to login page
-		if(!$scope.user){
-			$location.path('/login');
-		}
-
-		//Socket connections
-		var options = {
-			authorization: 'sweetpass'
-			//{ scheme: 'Basic', username: 'admin', password: 'password' }
-		};
-		primus = Primus.connect('http://'+$location.host());
-		primus.on('data', function (data) {
-   	//Testing sample engine.io
-   	if(data === 'usersActivityChange'){
-   		getOnlineUsers();
-   	} else if(data === 'messagePosted'){
-   		updateConvView();
-   	}
-   });
 		
-		var getOnlineUsers = function(){
+	//If no user login exists in the cookie store, redirect to login page
+	if(!$scope.user){
+		$location.path('/login');
+	}
+
+	//Socket connections
+	var options = {
+		authorization: 'sweetpass'
+			//{ scheme: 'Basic', username: 'admin', password: 'password' }
+	};
+	primus = Primus.connect('http://'+$location.host());
+	primus.on('data', function (data) {
+   		//Testing sample engine.io
+   		if(data === 'usersActivityChange'){
+   			getOnlineUsers();
+   		} 
+   		else if(data === 'messagePosted'){
+   			updateConvView();
+   		}
+   	});
+		
+	var getOnlineUsers = function(){
 		// Page load, get all online users to display
 		$http.get('/api/getOnlineUsers')
 		.success(function(data) {
