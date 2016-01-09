@@ -34,8 +34,7 @@ DBConnect.prototype.getCollection = function(collectionName){
 };
 
 DBConnect.prototype.closeDB = function(){
-	this.db.close();
-	COREAPI.logger.info('Connection closed!', { 'module': 'config' });
+	return this.db.close();
 };
 
 module.exports = DBConnect;

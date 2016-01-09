@@ -1,6 +1,7 @@
 var redis = require("redis"),
 	redisConfig = require('../../../../config/redis.js'),
-    redisClient = redis.createClient(redisConfig[process.env.NODE_ENV]);
+    redisClient = redis.createClient(redisConfig[process.env.NODE_ENV]),
+    eventHandler = require('../../../../app/eventHandler.js');
 
 var redisDAL = {
 	clipSocketToUser: function(socketDto, callback){
@@ -20,6 +21,10 @@ var redisDAL = {
 	}
 };
 
+eventHandler.on('closeRedis', function(){
+	redisClient.end();
+	console.log('Redis connections closed - redisDAL.js');
+});
 
 
 module.exports=redisDAL;

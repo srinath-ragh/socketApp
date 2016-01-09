@@ -1,7 +1,7 @@
 var Primus = require('primus'),
 PrimusCluster = require('primus-cluster'),
 cookie = require('cookie'),
-cluster = require('cluster'),
+//cluster = require('cluster'),
 redis = require("redis"),
 redisConfig = require('../config/redis.js'),
 socketRedisClient = redis.createClient(redisConfig[process.env.NODE_ENV]),
@@ -16,6 +16,12 @@ options = {
 RedisAdministrator = require('./modules/redis/RedisAdministrator.js'),
 redisAdmin = new RedisAdministrator(),
 eventHandler = require('./eventHandler.js');
+
+eventHandler.on('closeRedis', function(){
+	socketRedisClient.end();
+	usrActvyRedisClient.end();
+	console.log('Redis connections closed - socket.js');
+});
 
 module.exports = function(server){
 	var primus = new Primus(server, options);
@@ -78,7 +84,7 @@ module.exports = function(server){
 	COREAPI.logger.info('listener deployed');
 	socketRedisClient.on('message', function (channel, message) {
 //		COREAPI.logger.debug("socketRedisClient of "+cluster.worker.id+" channel " + channel + ": " + message);
-		COREAPI.logger.info(message+' socket write complete - '+cluster.worker.id);
+//		COREAPI.logger.info(message+' socket write complete - '+cluster.worker.id);
 		primus.write(message);
 	});
 	

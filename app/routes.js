@@ -11,6 +11,12 @@ redis = require('redis'),
 redisConfig = require('../config/redis.js'),
 client = redis.createClient(redisConfig[process.env.NODE_ENV]);
 
+eventHandler.on('closeRedis', function(){
+	client.end();
+	COREAPI.db.closeDB();
+	console.log('Redis connections closed - routes.js');
+});
+
 module.exports = function(app) {
 	// API
 	app.get('/', function(req, res) {

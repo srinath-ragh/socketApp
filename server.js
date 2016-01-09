@@ -25,6 +25,9 @@ require('./app/routes.js')(app);
 //Winston logger
 var logger = require('./config/logger.js');
 
+//EventHandler
+var eventHandler = require('./app/eventHandler.js');
+
 //DB Connect
 var DBconnect = require('./app/DBConnect.js'),
 dbconnect = new DBconnect();
@@ -42,6 +45,7 @@ if (cluster.isMaster) {
 
 	  cluster.on('exit', function(worker, code, signal) {
 	    console.log('worker '+worker.process.pid+' died with code '+code+' and signal '+signal);
+	    eventHandler.emit('closeRedis');
 	    console.log('Starting a new worker');
         cluster.fork();
 	  });
@@ -58,6 +62,12 @@ if (cluster.isMaster) {
 //				client.publish('postMessage', cluster.worker.id);
 //			}
 		});
+		server.on('close', function() {
+			eventHandler.emit('closeRedis');
+			});
+		process.on('SIGINT', function() {
+			  server.close();
+			});
 		//Primus initialization
 		require('./app/socket.js')(server);
 	}
