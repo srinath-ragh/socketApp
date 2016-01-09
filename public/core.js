@@ -53,7 +53,6 @@ coreApp.config(function($routeProvider) {
     });
 
 coreApp.controller('registerController', function($scope, $http, $location) {
-    // $scope.message = 'Look! I am a register page.';
     $scope.registerForm = {};
 
     $scope.doRegister = function() {
@@ -98,10 +97,11 @@ coreApp.controller('profileController', function($scope, $cookieStore, $location
 	$scope.userimg_url = $cookieStore.get('userimg_url');
 	$scope.hashedUser = $cookieStore.get('hash');
 	console.log($routeParams.id);
-  //   //Make an api call here and validate
-  $http.get('/api/getUserProfile/'+$routeParams.id)
-  .success(function(data) {
-  	if($scope.hashedUser === $routeParams.id){
+  
+  	//Make an api call here and validate
+  	$http.get('/api/getUserProfile/'+$routeParams.id)
+  		.success(function(data) {
+  			if($scope.hashedUser === $routeParams.id){
 				//Self user
 				$cookieStore.put('user', data[0].firstname);
 				$cookieStore.put('email', data[0].email);
@@ -113,22 +113,24 @@ coreApp.controller('profileController', function($scope, $cookieStore, $location
 				$scope.profileData = data[0];
 			}
 		})
-  .error(function(data) {
-  	return throwError('Error: ' + data);
-  });
+  		.error(function(data) {
+  			return throwError('Error: ' + data);
+  		});
 
-				//Logout Functionality
-				$scope.doLogout = function() {
-					$cookieStore.remove('user');
-					$cookieStore.remove('email');
-					$cookieStore.remove('hash');
-					$cookieStore.remove('userimg_url');
-					if(primus){
-						primus.end();
-					}
-					$location.path('/login');
-				};
-			});
+	//Logout Functionality
+	$scope.doLogout = function() {
+		$cookieStore.remove('user');
+		$cookieStore.remove('email');
+		$cookieStore.remove('hash');
+		$cookieStore.remove('userimg_url');
+				
+		if(primus) {
+			primus.end();
+		}
+		
+		$location.path('/login');
+	}
+});
 
 coreApp.directive('onFinishRender', function ($timeout) {
 	return {
@@ -274,9 +276,9 @@ coreApp.controller('homeController', function($scope, $location, $cookieStore, $
 		$('#chatInput').on("keypress", function(e) {
 			if (e.keyCode == 13) {
 				$scope.sendMessage();
-            return false; // prevent the button click from happening
-        }
-    });
+            	return false; // prevent the button click from happening
+        	}
+    	});
 	});
 
 coreApp.controller('loginController', function($scope, $http, $location, $cookieStore) {
