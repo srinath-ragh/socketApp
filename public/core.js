@@ -229,6 +229,7 @@ coreApp.controller('homeController', function($scope, $location, $cookieStore, $
 
 		//Post chat message
 		$scope.sendMessage = function() {
+			$("#chatInput").focus();
 			var content = $scope.messageContent,
 			postBody = {
 				'content': content,
@@ -266,6 +267,13 @@ coreApp.controller('homeController', function($scope, $location, $cookieStore, $
 	    		$('#chat_loader').show();
 	    		getConvData();
 	    }
+		});
+
+		$('#chatInput').on("keypress", function(e) {
+        if (e.keyCode == 13) {
+            $scope.sendMessage();
+            return false; // prevent the button click from happening
+        }
 		});
 });
 
