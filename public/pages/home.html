@@ -1,0 +1,75 @@
+<nav class="navbar navbar-inverse navbar-fixed-top">
+  <!-- We use the fluid option here to avoid overriding the fixed width of a normal container within the narrow content columns. -->
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/#/home">Chirp</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-7">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="/#/home">Home</a></li>
+        <!--li><a href="#">Link</a></li>
+        <li><a href="#">Link</a></li-->
+      </ul>
+    <div class="pull-right">
+    <a ng-href="/#/profile/{{ hashedUser }}"><img ng-src="{{ userimg_url }}" alt="{{ user }} Avatar" href="/#/login" class="img-circle pull-left" height="42" width="42"></a>
+    <a ng-href="/#/profile/{{ hashedUser }}" class="navbar-text">{{ user }}</a>
+	<button class="btn btn-default navbar-btn  pull-right" ng-click="doLogout()">logout</button>
+	</div>
+    </div><!-- /.navbar-collapse -->
+  </div>
+</nav>  
+<div class="container">
+    <!-- <h1>Home Page</h1> -->
+    <br />
+    <br />
+    <div id="mainview" class="col-md-9">
+	    <div class="panel panel-default">
+	        <div class="panel-heading" align="center">
+	        Public Chat 
+	        <span class="pull-right">Loaded: {{ convData.length  }}</span>
+	        </div>
+	        <div id="chat" class="panel-body">
+	            <ul class="chat">
+	            	<div id="chat_loader" align="middle" disabled>
+	            		<img src="../images/ajax-loader.gif">
+	            	</div>
+					<li ng-repeat="conv in convData | orderBy: 'modifiedTime'" ng-class="(conv.from===hashedUser) ? 'right clearfix' : 'left clearfix'" on-finish-render="ngRepeatFinished">
+					<span ng-class="(conv.from===hashedUser) ? 'chat-img pull-right' : 'chat-img pull-left'">
+					     <a ng-href="/#/profile/{{ conv.userDetails._id }}"><img ng-src="{{ conv.userDetails.imgUrl }}" alt="User Avatar" class="img-circle" height="42" width="42"></a>
+					</span>
+					    <div class="chat-body clearfix">
+						<div class="header">
+						    <a ng-href="/#/profile/{{ conv.userDetails._id }}"><strong ng-class="(conv.from===hashedUser) ?  'pull-right primary-font':' primary-font'">{{ conv.userDetails.firstname }}</strong></a> <small ng-class="(conv.from===hashedUser) ? ' text-muted' : 'pull-right text-muted'">
+							<span class="glyphicon glyphicon-time"></span>{{ conv.modifiedTime | date:'medium'}}</small>
+						</div>
+						<p ng-class="(conv.from===hashedUser) ?  'pull-right':'pull-left'">{{ conv.content }}</p>
+					    </div>
+					</li>
+	            </ul>
+	        </div>
+	        <div class="panel-footer">
+	            <div class="input-group">
+	                <input ng-model="messageContent" type="text" class="form-control input-sm" placeholder="Type your message here..." autofocus="">
+	                <span class="input-group-btn">
+	                    <button class="btn btn-warning btn-sm" id="btn-chat" ng-click="sendMessage()">
+	                        Send</button>
+	                </span>
+	            </div>
+	        </div>
+	    </div>
+    </div>
+    <div id="sidebar" class="col-md-3">
+	    <h4 align="center"><span class="glyphicon glyphicon-user" aria-hidden="true"> </span> Users Online ({{ onlineUsers.length }})</h4>
+	    <br />
+		<div id="users-list" class="row">
+			<table class="table table-hover">
+			<tbody>
+			<tr ng-repeat="userdetails in onlineUsers">
+				<td class="text-center"> {{ userdetails.firstname }} </td>
+			</tr>
+			</tbody>
+			</table>
+		</div>
+	</div>
+</div>

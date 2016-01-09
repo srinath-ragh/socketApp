@@ -1,0 +1,89 @@
+<nav class="navbar navbar-inverse navbar-fixed-top">
+      <!-- We use the fluid option here to avoid overriding the fixed width of a normal container within the narrow content columns. -->
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">Chirp</a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-7">
+          <ul class="nav navbar-nav">
+            <li><a href="/#/home">Home</a></li>
+            <!--li><a href="#">Link</a></li>
+            <li><a href="#">Link</a></li-->
+          </ul>
+	    <div class="pull-right">
+	    <a ng-href="/#/profile/{{ hashedUser }}"><img ng-src="{{ userimg_url }}" alt="{{ user }} Avatar" href="/#/login" class="img-circle pull-left" height="42" width="42"></a>
+	    <a ng-href="/#/profile/{{ hashedUser }}" class="navbar-text">{{ user }}</a>
+		<button class="btn btn-default navbar-btn  pull-right" ng-click="doLogout()">logout</button>
+		</div>
+        </div><!-- /.navbar-collapse -->
+      </div>
+</nav>  
+<div class="container">
+      <div class="row">
+       <br>
+      </div>
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-3 toppad" >
+   
+   
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">{{ profileData.firstname }}'s Profile</h3>
+            </div>
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-md-12 col-lg-12 " align="center"> <img ng-src="{{ profileData.imgUrl }}" alt="{{ profileData.firstname }} Avatar" class="img-circle img-responsive" height="100" width="100"> </div>
+				<div class="profile-usertitle">
+					<div class="profile-usertitle-name">
+						{{ profileData.firstname }} {{ profileData.lastname }}
+					</div>
+				</div>
+                <div class=" col-md-12 col-lg-12 "> 
+                  <table class="table table-user-information">
+                    <tbody>
+                      <!-- <tr>
+                        <td>First Name</td>
+                        <td>{{ profileData.firstname }}</td>
+                      </tr>
+                      <tr>
+                        <td>Last Name</td>
+                        <td>{{ profileData.lastname }}</td>
+                      </tr> -->
+                      <tr>
+                        <td>Gender</td>
+                        <td>{{ profileData.sex }}</td>
+                      </tr>
+                      <tr>
+                        <td>Location</td>
+                        <td>{{ profileData.city }}</td>
+                      </tr>
+                        <tr>
+                        <td>Image Link</td>
+                        <td><a ng-href="{{ profileData.imgUrl }}">user img</a><br /></td>
+                      </tr>
+                      <tr>
+                        <td>Email</td>
+                        <td><a ng-href="{{ profileData.email }}">{{ profileData.email }}</a></td>
+                      </tr>
+                      <tr>
+                        <td>Last Modified</td>
+                        <td>{{ profileData.modifiedTime | date:'medium'}}</td>
+                      </tr>
+                        <td>Phone Number</td>
+                        <td>{{ profileData.mobile }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+                 <div class="panel-footer">
+                        <a data-original-title="Broadcast Message" data-toggle="tooltip" type="button" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-envelope"></i></a>
+                        <span class="pull-right">
+                            <a href="edit.html" data-original-title="Edit this user" data-toggle="tooltip" type="button" class="btn btn-sm btn-warning pull-right"><i class="glyphicon glyphicon-edit"></i></a>
+                    </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
