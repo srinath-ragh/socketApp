@@ -4,8 +4,9 @@ var http = require('http');
 var app = express();
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
-process.env.PORT = 8080;
+process.env.PORT = process.env.OPENSHIFT_NODEJS_PORT || 8080;
 var port = process.env.PORT || 3000;
+var ipaddress = process.env.OPENSHIFT_NODEJS_IP || "127.0.0.1";
 var morgan = require('morgan');
 var cluster = require('cluster');
 var numCPUs = require('os').cpus().length;
@@ -45,7 +46,9 @@ if (cluster.isMaster) {
 	  
 	} else {
 		var server = http.createServer(app);
-		server.listen(port);
+		server.listen(port, ipaddress, function() {
+			COREAPI.logger.info('server running at '+port,{ 'module': 'general' });
+		});
 		COREAPI.logger.info('server instance pid: '+cluster.worker.id+' running at '+port,{ 'module': 'general' });
 		server.on('request', function(request){
 			COREAPI.logger.silly('instance '+cluster.worker.id+' picks the '+request.method+' request from '+request.connection.remoteAddress, {route: 'Cluster'});
