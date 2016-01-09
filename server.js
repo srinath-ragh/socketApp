@@ -41,15 +41,16 @@ if (cluster.isMaster) {
 	  }
 
 	  cluster.on('exit', function(worker, code, signal) {
-	    console.log('worker '+worker.process.pid+' died');
+	    console.log('worker '+worker.process.pid+' died with code '+code+' and signal '+signal);
+	    console.log('Starting a new worker');
+        cluster.fork();
 	  });
 	  
 	} else {
 		var server = http.createServer(app);
 		server.listen(port, ipaddress, function() {
-			COREAPI.logger.info('server running at '+port,{ 'module': 'general' });
+			COREAPI.logger.info('server instance pid: '+cluster.worker.id+' running at '+port,{ 'module': 'general' });
 		});
-		COREAPI.logger.info('server instance pid: '+cluster.worker.id+' running at '+port,{ 'module': 'general' });
 		server.on('request', function(request){
 			COREAPI.logger.silly('instance '+cluster.worker.id+' picks the '+request.method+' request from '+request.connection.remoteAddress, {route: 'Cluster'});
 //			if(request.url==='/api/postMessage' && request.method === 'POST'){
